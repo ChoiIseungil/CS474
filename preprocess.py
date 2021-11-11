@@ -14,8 +14,9 @@ with open('./data.txt','w') as f:
         data = json.load(j)
         for key in data: print(key)
         titles = data["title"]
-        bodies = data["bodies"]
+        bodies = data["body"]
         for key in titles:
             f.write(titles[key] + ' ' + bodies[key] + '\n')
 
+f.close()
 # f = open()
