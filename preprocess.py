@@ -12,6 +12,7 @@ with open('./data.txt','w') as f:
     for file in files:
         j = open(file,'r')
         data = json.load(j)
+        print(file)
         for key in data: print(key)
         titles = data["title"]
         bodies = data["body"]
