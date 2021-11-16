@@ -8,16 +8,22 @@ import contractions
 
 nltk.download('stopwords')
 STOPWORDS = set(nltk.corpus.stopwords.words('english'))
-
+STOPWORDS.remove('s')
 
 def preprocess(text):
-    text = re.sub("[\[\(\{].*?[\]\)\}]", "", text)                                      # 1. remove words in the parentheses
-    text = text.encode('ascii','ignore').decode()                                       # 2. remove non ascii characters
-    text = re.sub("b[w-.]+?@w+?.w{2,4}b", "", text)                                     # 3. remove email address
-    text = re.sub("(http[s]?S+)|(w+.[A-Za-z]{2,4}S*)", "", text)                        # 4. remove urls
+    print(text)
+    text = re.sub("[\[\(\{].*?[\]\)\}]", " ", text)                                     # 1. remove words in the parentheses
+    text = re.sub("\S*@\S*\s?|(http[s]?S+)|(w+.[A-Za-z]{2,4}S*)", " ", text)            # 2. remove email address and ur.s
+    text = text.replace("'s", " ")                                                      # 3. remove apostrophes with s (it appears a lot)
+    text = text.replace(".",". ")                                                       # 4. sentence seperate problem
+    text = text.encode('ascii','ignore').decode()                                       # 4. remove non ascii characters
     text = text.lower()                                                                 # 5. lower
-    text = contractions.fix(text)                                                       # 6. expand contractions
-    text= " ".join([word for word in str(text).split() if word not in STOPWORDS])       # 7. remove stopwords
+    text = contractions.fix(text)                                                       # 7. expand contractions
+    text = re.sub("[^\w. -]|_", " ", text)                                              # 8. erase except -, ., alphanumerics
+    text= " ".join([word for word in str(text).split() if word not in STOPWORDS])       # 9. remove stopwords
+    text = re.sub("you. s","u.s",text)                                                   # 10. corner case u.s. (appeared 15052 times..!)
+    text = re.sub("north korea|n. korea","n.korea",text)                                # 11. corner case n.korea 
+    text = re.sub("south korea|s. korea","s.korea",text)                                # 12. corner case s.korea
     return text
 
 
@@ -25,16 +31,14 @@ def main():
     files = []
     for file in glob.glob("./raw_data/*.json"): files.append(file)
 
-    print("Started")
-
     with open('./data.txt','w') as f:
         for file in files:
             j = open(file,'r')
             data = json.load(j)
-            titles = preprocess(data["title"])
-            bodies = preprocess(data["body"])
+            titles = data["title"]
+            bodies = data["body"]
             for key in titles:
-                f.write(titles[key] + ' ' + bodies[key] + '\n')
+                f.write(preprocess(titles[key]) + ' ' + preprocess(bodies[key]) + '\n')
 
     f.close()
 
