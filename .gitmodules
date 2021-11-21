@@ -1,0 +1,3 @@
+[submodule "bertopic/bertopic"]
+	path = bertopic/bertopic
+	url = https://github.com/MaartenGr/BERTopic.git
