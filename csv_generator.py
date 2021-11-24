@@ -1,4 +1,4 @@
-# Written by Seungil Lee, Nov 11, 2021
+# Written by Seungil Lee, Nov 25, 2021
 
 import json
 import re
@@ -12,7 +12,6 @@ STOPWORDS = set(nltk.corpus.stopwords.words('english'))
 STOPWORDS.remove('s')
 
 def preprocess(text):
-    print(text)
     text = re.sub("[\[\(\{].*?[\]\)\}]", " ", text)                                     # 1. remove words in the parentheses
     text = re.sub("\S*@\S*\s?|(http[s]?S+)|(w+.[A-Za-z]{2,4}S*)", " ", text)            # 2. remove email address and ur.s
     text = text.lower()                                                                 # 3. lower
@@ -32,10 +31,11 @@ def main():
     files = []
     for file in glob.glob("./raw_data/*.json"): files.append(file)
 
-    with open('./data.csv','w') as f:
-        f.writerow["title","body","time","section"]
+    with open('./data/data.csv','w') as f:
+        writer = csv.writer(f)
+        writer.writerow(["title","body","time","section"])
         for file in files:
-            print(file.name, " in progress")
+            print(file, " in progress")
             j = open(file,'r')
             data = json.load(j)
             titles = data["title"]
@@ -47,7 +47,7 @@ def main():
                 body = preprocess(title) + ' ' + preprocess(bodies[key])
                 date = dates[key].split()[0]
                 section = sections[key]
-                f.writerow([title,body,date,section])
+                writer.writerow([title,body,date,section])
             j.close()
 
     f.close()
