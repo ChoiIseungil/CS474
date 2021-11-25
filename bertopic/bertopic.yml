@@ -213,4 +213,3 @@ dependencies:
     - tokenizers==0.10.3
     - transformers==4.12.3
     - umap-learn==0.5.2
-prefix: /home/cs474/anaconda3/envs/bertopic

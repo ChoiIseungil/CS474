@@ -3,3 +3,5 @@ raw_data/
 data/
 *.json
 *.txt
+*.pyc
+*.ipynb
