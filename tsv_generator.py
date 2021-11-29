@@ -40,11 +40,11 @@ def main():
             j = open(file,'r')
             data = json.load(j)
             titles = data["title"]
-            bodies = data["body"].replace('\n',' ')
+            bodies = data["body"]
             dates = data["time"]
             for key in titles:
                 title = titles[key]
-                raw_body = bodies[key]
+                raw_body = bodies[key].replace('\n',' ')
                 body = preprocess(title) + ' ' + preprocess(raw_body)
                 year, month, day = tuple((dates[key].split()[0]).split('-'))
                 if year == YEAR:  writer.writerow([title,raw_body,body,month+'-'+day,None,None,None,None,None,None])
