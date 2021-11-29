@@ -7,6 +7,7 @@ import nltk
 import contractions
 import csv
 
+YEAR = "2017"
 nltk.download('stopwords')
 STOPWORDS = set(nltk.corpus.stopwords.words('english'))
 STOPWORDS.remove('s')
@@ -31,23 +32,23 @@ def main():
     files = []
     for file in glob.glob("./raw_data/*.json"): files.append(file)
 
-    with open('./data/data.csv','w') as f:
-        writer = csv.writer(f)
-        writer.writerow(["title","body","time","section"])
+    with open('./data/' + YEAR + '.tsv','w') as f:
+        writer = csv.writer(f,delimiter = '\t')
+        writer.writerow(["title","rawbody","body","date","keyword","issue","event","relatedissue","similarity","ner"])
         for file in files:
             print(file, " in progress")
             j = open(file,'r')
             data = json.load(j)
             titles = data["title"]
-            bodies = data["body"]
+            bodies = data["body"].replace('\n',' ')
             dates = data["time"]
-            sections = data["section"]
             for key in titles:
                 title = titles[key]
-                body = preprocess(title) + ' ' + preprocess(bodies[key])
-                date = dates[key].split()[0]
-                section = sections[key]
-                writer.writerow([title,body,date,section])
+                raw_body = bodies[key]
+                body = preprocess(title) + ' ' + preprocess(raw_body)
+                year, month, day = tuple((dates[key].split()[0]).split('-'))
+                if year == YEAR:  writer.writerow([title,raw_body,body,month+'-'+day,None,None,None,None,None,None])
+                else: continue
             j.close()
 
     f.close()

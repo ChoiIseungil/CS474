@@ -12,14 +12,18 @@ def ner(document):
     for sent in doc.sentences:
         for ent in sent.ents:
             result.add((ent.text, ent.type))
-    return str(result)
+    return result
 
-raw = open('./raw_data.txt','r')
-new = open('./stanza_ner.txt','w')
+def main():
+    raw = open('./raw_data.txt','r')
+    new = open('./stanza_ner.txt','w')
 
 
-for line in raw: 
-    new.write(ner(line)+'\n')
+    for line in raw: 
+        new.write(str(ner(line))+'\n')
 
-raw.close()
-new.close()
+    raw.close()
+    new.close()
+
+if __name__ == '__main__':
+    main()

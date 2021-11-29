@@ -1,7 +1,7 @@
 import os
 from bertopic import BERTopic
 topic_model = BERTopic()
-file_path = "/home/cs474/CS474/data.txt"
+file_path = "/home/cs474/CS474/data/data.txt"
 of = open(file_path, 'r')
 rf = of.read()
 of.close()

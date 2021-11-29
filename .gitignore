@@ -1,6 +1,7 @@
 .DS_Store
 raw_data/
 data/
+hyeann/
 *.json
 *.txt
 *.pyc
