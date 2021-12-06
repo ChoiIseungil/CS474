@@ -2,6 +2,5 @@
 raw_data/
 hyeann/
 *.json
-*.txt
 *.pyc
 *.ipynb

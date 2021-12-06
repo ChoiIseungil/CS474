@@ -101,10 +101,10 @@ issueRelateds = [int(i) for i in issueRelateds]
 while True:
     MODE = input("""
          
-    Choose the mode
-        1. On-issue Event Tracking
-        2. Related-issue Event Tracking 
-        Input: """)
+Choose the mode
+    1. On-issue Event Tracking
+    2. Related-issue Event Tracking 
+    Input: """)
 
     MODE = int(MODE)
     if MODE not in [1,2]:
