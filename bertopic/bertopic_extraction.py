@@ -19,7 +19,7 @@ def extract_topic(temp_true = False):
     file_type = ".tsv"
     end = "_issue"
 
-#    models = []
+
     for year in range(2015, 2018):
         if temp_true:
             file = temp_dir + str(year) + file_type
@@ -256,92 +256,9 @@ def extract_event(temp_true = False):
     return
 
 
-def compute_related_topic(topic_models, temp_true = False):
-    data_dir = find_root()+"data/"
-    temp_dir = find_root()+"hyeann/"
-    file_type = ".tsv"
-    end = "_issue"
-
-    model_iter = iter(topic_models)
-    for year in range(2015, 2018):
-        model = next(model_iter)
-        if temp_true:
-            file = temp_dir + str(year) + file_type
-        else:
-            file = data_dir + str(year) + file_type
-    
-        up_dt = []
-        related_event = [[(0, -1)] * 5 for _ in range(10)]
-        of = open(file, 'r')
-        dt = csv.DictReader(of, delimiter='\t')
-        idx = 0
-        for r in dt:
-            row = { 'title': r['title'],
-                    'rawbody': r['rawbody'],
-                    'body': r['body'],
-                    'date': r['date'],
-                    'keyword': r['keyword'],
-                    'issue': r['issue'],
-                    'event': r['event'],
-                    'relatedissue': None,
-                    'similarity': None,
-                    'ner': r['ner']}
-            
-            if not int(row['issue']) in range(0, 10):
-                keyword, _, _ = row['keyword'].partition(',')
-                topics, similarity = model.find_topics(keyword)
-                for i in range(len(topics)):
-                    topic = topics[i]
-                    sim = similarity[i]
-                    if not topic in range(0, 10):
-                        continue
-                    row['relatedissue'] = topic
-                    row['similarity'] = sim
-                    if sim > related_event[topic][-1][0]:
-                        related_event[topic][-1] = (sim, idx)
-                        related_event[topic].sort(reverse=True)
-                    break
-            up_dt.append(row)
-
-            idx = idx + 1
-            if idx%100==0:
-                print("\tline", idx, "...")
-        of.close()
-
-
-        if temp_true:
-            file = temp_dir + str(year) + end + file_type
-        else:
-            file = data_dir + str(year) + end + file_type
-        up_dt = []
-        of = open(file, 'r')
-        dt = csv.DictReader(of, delimiter='\t')
-        tup_iter = iter(related_event)
-        for r in dt:
-            info = next(tup_iter)
-            row = {'representativedoc': r['representativedoc'],
-                    'keyword': r['keyword'],
-                    'related1': info[0][1],
-                    'related2': info[1][1],
-                    'related3': info[2][1],
-                    'related4': info[3][1],
-                    'related5': info[4][1]}
-            up_dt.append(row)
-        of.close()
-
-        headers = ["representativedoc","keyword","related1","related2","related3","related4","related5"]
-        of = open(file, 'w', newline="")
-        tsv_writer = csv.DictWriter(of, delimiter='\t', fieldnames=headers)
-        tsv_writer.writerow(dict((heads, heads) for heads in headers))
-        tsv_writer.writerows(up_dt)
-        of.close()
-
-    return
-
-
 if __name__ == '__main__':
-    topic_models = extract_topic(temp_true = True)
-    extract_event(temp_true = True)
+    topic_models = extract_topic(temp_true = False)
+    extract_event(temp_true = False)
 #    extract_topic()
 #    extract_event()
-#    compute_related_topic(topic_models, temp_true = True)
+#    compute_related_topic(topic_models, temp_true = False)

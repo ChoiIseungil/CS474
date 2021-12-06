@@ -13,6 +13,7 @@ STOPWORDS = set(nltk.corpus.stopwords.words('english'))
 STOPWORDS.remove('s')
 
 def preprocess(text):
+    text = text.encode('ascii','ignore').decode()                                       # 9. remove non ascii characters
     text = re.sub("[\[\(\{].*?[\]\)\}]", " ", text)                                     # 1. remove words in the parentheses
     text = re.sub("\S*@\S*\s?|(http[s]?S+)|(w+.[A-Za-z]{2,4}S*)", " ", text)            # 2. remove email address and ur.s
     text = text.lower()                                                                 # 3. lower
@@ -21,7 +22,6 @@ def preprocess(text):
     text = re.sub("south korea|s. korea|s. k.","skorea",text)                           # 6. corner case s.korea
     text = text.replace("'s", " ")                                                      # 7. remove apostrophes with s (it appears a lot)
     text = text.replace(".",". ")                                                       # 8. sentence seperate problem
-    text = text.encode('ascii','ignore').decode()                                       # 9. remove non ascii characters
     text = contractions.fix(text)                                                       # 10. expand contractions
     text = re.sub("[^\w. -]|_", " ", text)                                              # 11. erase except -, ., alphanumerics
     text= " ".join([word for word in str(text).split() if word not in STOPWORDS])       # 12. remove stopwords

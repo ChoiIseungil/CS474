@@ -1,12 +1,13 @@
-# 02 Dec 2021, HyeAnn Lee
+# 05 Dec 2021, HyeAnn Lee
 
 import csv
+
 
 years = ['2015', '2016', '2017']
 
 def match_keyword(year, rep_docs_id, up_dt, file_path, headers):
     # Read 201*.tsv
-    file_path_docs = "./hyeann/" + year + ".tsv"
+    file_path_docs = "./data/" + year + ".tsv"
     of = open(file_path_docs, 'r')
     dt = csv.DictReader(of, delimiter='\t')
     line_num = 0
@@ -27,12 +28,12 @@ def match_keyword(year, rep_docs_id, up_dt, file_path, headers):
     of.close()
     # Close 201*_issue.tsv or 201*_event.tsv
 
+    return
+
 
 def match_per_issue():
     for year in years:
-        print(year, "tsv ......")
-
-        file_path = "./hyeann/" + year + "_issue.tsv"
+        file_path = "./data/" + year + "_issue.tsv"
         up_dt = []
 
         # Read 201*_issue.tsv
@@ -56,15 +57,14 @@ def match_per_issue():
         # Write KEYWORD on 201*_issue.tsv
         headers = ["representativedoc","keyword","related1","related2","related3","related4","related5"]
         match_keyword(year, rep_docs_id, up_dt, file_path, headers)
+    
+    return
 
-        print(year, "issue tsv completed\n")
 
 
 def match_per_event():
     for year in years:
-        print(year, "tsv ......")
-
-        file_path = "./hyeann/" + year + "_event.tsv"
+        file_path = "./data/" + year + "_event.tsv"
         up_dt = []
 
         # Read 201*_event.tsv
@@ -85,8 +85,8 @@ def match_per_event():
         # Write KEYWORD on 201*_event.tsv
         headers = ["issue","event","representativedoc","keyword"]
         match_keyword(year, rep_docs_id, up_dt, file_path, headers)
-
-        print(year, "event tsv completed")
+    
+    return
 
 
 if __name__ == '__main__':

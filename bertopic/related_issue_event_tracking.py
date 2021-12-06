@@ -19,7 +19,6 @@ def compute_related_topic(temp_true = False):
     file_type = ".tsv"
     end = "_issue"
 
-#    model_iter = iter(topic_models)
     for year in range(2015, 2018):
         print(year)
 
@@ -63,12 +62,6 @@ def compute_related_topic(temp_true = False):
 
                 keyword, _, _ = row['keyword'].partition(',')
 
-                '''
-                title_words = row['title'].split()
-                spl = min(5, len(title_words))
-                keyword = ' '.join(title_words[:spl])
-                '''
-
                 topics, similarity = model.find_topics(keyword)
                 for i in range(len(topics)):
                     topic = topics[i]
@@ -86,8 +79,6 @@ def compute_related_topic(temp_true = False):
             up_dt.append(row)
 
             idx = idx + 1
-#            if idx%100==0:
-#                print("\tline", idx, "...")
         of.close()
         # Close 201*.tsv
 
