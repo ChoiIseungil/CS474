@@ -38,5 +38,6 @@ Choose the the mode between **‘1. On-issue Event Tracking’** and **‘2. Rel
 - Detailed information per event, such as name of person, organization and place involved.
 
 
-*Korean Issue Tracker is developed for a term project of the course: KAIST 2021 Fall CS474 Text Mining, instructed by Prof. Sung-Hyon Myaeng.\
-Please leave issues on Github repository or contact silly5921@kaist.ac.kr if you have any feedbacks 
+*Korean Issue Tracker is developed for a term project of the course:* \
+*KAIST 2021 Fall CS474 Text Mining, instructed by Prof. Sung-Hyon Myaeng.*\
+*Please leave issues on Github repository or contact silly5921@kaist.ac.kr if you have any feedbacks* 
